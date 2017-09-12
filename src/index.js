@@ -9,17 +9,16 @@ import logger from 'redux-logger'
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
 import reducer from './reducers'
+import { getAllCategories, getAllPosts } from './actions'
 import App from './components/App'
 
-console.log(thunk);
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  || compose
-
-
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const middlewares = [ thunk, logger ]
-
 const store = composeEnhancers(applyMiddleware(...middlewares))(createStore)(reducer)
+
+// Initialize store state
+store.dispatch(getAllCategories())
+store.dispatch(getAllPosts())
 
 ReactDOM.render(
   <Provider store={store}>

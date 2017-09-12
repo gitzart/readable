@@ -1,10 +1,30 @@
 import { combineReducers } from 'redux'
+import {
+  LOAD_CATEGORIES,
+  LOAD_POSTS
+} from '../constants/ActionTypes'
 
-const reducer = (state = {}, action) => {
+const categories = (state = {}, action) => {
   switch (action.type) {
+    case LOAD_CATEGORIES:
+      return { ...state, ...action.categories }
     default:
       return state
   }
 }
 
-export default combineReducers({ reducer })
+const posts = (state = {}, action) => {
+  switch (action.type) {
+    case LOAD_POSTS:
+      return { ...state, ...action.posts }
+    default:
+      return state
+  }
+}
+
+const reducer = combineReducers({
+  categories,
+  posts
+})
+
+export default reducer

@@ -1,27 +1,17 @@
 import React, { Component } from 'react'
+import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Home from './Home'
 
 class App extends Component {
   render() {
-    const { categories, posts } = this.props
-
     return (
       <div>
         <h1>Readable</h1>
 
-        <ul>
-          {categories.map(c => (
-            <li key={c.name}>{c.name}</li>
-          ))}
-        </ul>
-
-        <hr />
-
-        <ul>
-          {posts.map(p => (
-            <li key={p.id}>{p.body}</li>
-          ))}
-        </ul>
+        <Route exact path='/' render={() => (
+          <Home {...this.props} />
+        )} />
       </div>
     )
   }
@@ -37,4 +27,4 @@ function mapStateToProps (state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))

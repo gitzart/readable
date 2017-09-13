@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Home from './Home'
 import Category from './Category'
+import Post from './Post'
 
 class App extends Component {
   render() {
@@ -16,6 +17,10 @@ class App extends Component {
 
         <Route path='/categories/:category' render={routeProps => (
           <Category {...this.props} {...routeProps} />
+        )} />
+
+        <Route path='/posts/:postId' render={routeProps => (
+          <Post {...this.props} {...routeProps} />
         )} />
       </div>
     )

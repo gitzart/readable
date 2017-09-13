@@ -9,8 +9,8 @@ class Category extends Component {
   }
 
   render () {
-    const { posts } = this.props
     const category = this.props.match.params.category
+    const posts = this.props.posts.filter(p => p.category === category)
 
     return (
       <div>
@@ -18,7 +18,7 @@ class Category extends Component {
         <Link to='/'>Home</Link>
 
         <ul>
-          {posts.filter(p => p.category === category).map(p => (
+          {posts.map(p => (
             <li key={p.id}>
               <Link to={`/posts/${p.id}`}>{p.title} </Link>
               <span>by {p.author}</span>

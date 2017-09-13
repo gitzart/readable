@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Home from './Home'
+import Category from './Category'
 
 class App extends Component {
   render() {
@@ -11,6 +12,10 @@ class App extends Component {
 
         <Route exact path='/' render={() => (
           <Home {...this.props} />
+        )} />
+
+        <Route path='/categories/:category' render={routeProps => (
+          <Category {...this.props} {...routeProps} />
         )} />
       </div>
     )

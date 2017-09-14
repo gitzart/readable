@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class Category extends Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
-    match: PropTypes.object.isRequired
+    category: PropTypes.string,
+    posts: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
   render () {
-    const category = this.props.match.params.category
-    const posts = this.props.posts.filter(p => p.category === category)
+    const { category, posts } = this.props
 
     return (
       <div>
@@ -32,4 +32,13 @@ class Category extends Component {
   }
 }
 
-export default Category
+function mapStateToProps (state, ownProps) {
+  const category = ownProps.match.params.category
+
+  return {
+    category,
+    posts: ownProps.posts.filter(p => p.category === category)
+  }
+}
+
+export default connect(mapStateToProps)(Category)

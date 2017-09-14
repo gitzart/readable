@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class Post extends Component {
   static propTypes = {
-    posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    match: PropTypes.object.isRequired
+    post: PropTypes.object
   }
 
   render () {
-    const postId = this.props.match.params.postId
-    const post = this.props.posts.filter(p => p.id === postId)[0]
+    const { post } = this.props
 
     return (
       <div>
@@ -27,4 +26,12 @@ class Post extends Component {
   }
 }
 
-export default Post
+function mapStateToProps (state, ownProps) {
+  const postId = ownProps.match.params.postId
+
+  return {
+    post: ownProps.posts.filter(p => p.id === postId)[0]
+  }
+}
+
+export default connect(mapStateToProps)(Post)

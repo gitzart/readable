@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import PostItem from './PostItem'
 
 class Category extends Component {
   static propTypes = {
@@ -10,19 +11,26 @@ class Category extends Component {
   }
 
   render () {
-    const { category, posts } = this.props
+    const { category, posts, sortPosts, selectedSortKey } = this.props
 
     return (
       <div>
-        <h3>{category}</h3>
         <Link to='/'>Home</Link>
+        <h3>{category}</h3>
+
+        <div>
+          <span>Sort by </span>
+          <select value={selectedSortKey} onChange={sortPosts}>
+            <option value='-voteScore'>Vote Score</option>
+            <option value='title'>Title</option>
+            <option value='-timestamp'>Date</option>
+          </select>
+        </div>
 
         <ul>
-          {posts.map(p => (
-            <li key={p.id}>
-              <Link to={`/posts/${p.id}`}>{p.title} </Link>
-              <span>by {p.author}</span>
-              <p>{p.body}</p>
+          {posts.map(post => (
+            <li key={post.id}>
+              <PostItem post={post} />
               <br />
             </li>
           ))}

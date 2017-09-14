@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import Time from 'react-time'
+import PostItem from './PostItem'
 
 class Home extends Component {
   static propTypes = {
@@ -36,22 +36,9 @@ class Home extends Component {
         </div>
 
         <ul>
-          {posts.map(p => (
-            <li key={p.id}>
-              <Link to={`/posts/${p.id}`}>
-                <h4>{p.title}</h4>
-              </Link>
-              <div>
-                <span>by {p.author} | </span>
-                <span>votes {p.voteScore} | </span>
-                <span>
-                  <Time
-                    value={p.timestamp}
-                    format={`MMM DD'YY [at] HH:mm`}
-                  />
-                </span>
-              </div>
-              <p>{p.body}</p>
+          {posts.map(post => (
+            <li key={post.id}>
+              <PostItem post={post} />
               <br />
             </li>
           ))}

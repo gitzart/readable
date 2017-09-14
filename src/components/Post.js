@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import PostItem from './PostItem'
 
 class Post extends Component {
   static propTypes = {
@@ -14,13 +15,7 @@ class Post extends Component {
     return (
       <div>
         <Link to='/'>Home</Link>
-        {post && (
-          <div>
-            <h3>{post.title}</h3>
-            <span>by {post.author}</span>
-            <p>{post.body}</p>
-          </div>
-        )}
+        {post && <PostItem post={post} />}
       </div>
     )
   }

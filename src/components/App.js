@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import sortBy from 'sort-by'
+import { sortPosts } from '../actions'
 import Home from './Home'
 import Category from './Category'
 import Post from './Post'
@@ -30,11 +32,19 @@ class App extends Component {
 function mapStateToProps (state, ownProps) {
   const categories = Object.keys(state.categories)
   const posts = Object.keys(state.posts)
+  const sortKey = state.misc.sortPosts
 
   return {
     categories: categories.map(c => state.categories[c]),
-    posts: posts.map(p => state.posts[p])
+    posts: posts.map(p => state.posts[p]).sort(sortBy(sortKey)),
+    selectedSortKey: sortKey
   }
 }
 
-export default withRouter(connect(mapStateToProps)(App))
+function mapDispatchToProps (dispatch) {
+  return {
+    sortPosts: e => dispatch(sortPosts(e.target.value))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

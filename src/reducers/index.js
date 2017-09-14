@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import {
   LOAD_CATEGORIES,
-  LOAD_POSTS
+  LOAD_POSTS,
+  SORT_POSTS
 } from '../constants/ActionTypes'
 
 const categories = (state = {}, action) => {
@@ -22,9 +23,23 @@ const posts = (state = {}, action) => {
   }
 }
 
+const miscState = {
+  sortPosts: '-voteScore'
+}
+
+const misc = (state = miscState, action) => {
+  switch (action.type) {
+    case SORT_POSTS:
+      return { ...state, sortPosts: action.key }
+    default:
+      return state
+  }
+}
+
 const reducer = combineReducers({
   categories,
-  posts
+  posts,
+  misc
 })
 
 export default reducer

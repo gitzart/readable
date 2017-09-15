@@ -14,6 +14,11 @@ export const loadPosts = posts => ({
   posts
 })
 
+export const loadComments = comments => ({
+  type: types.LOAD_COMMENTS,
+  comments
+})
+
 export const sortPosts = key => ({
   type: types.SORT_POSTS,
   key
@@ -27,3 +32,6 @@ export const getAllCategories = () => dispatch =>
 
 export const getAllPosts = () => dispatch =>
   API.getAllPosts().then(data => dispatch(loadPosts(data)))
+
+export const getAllComments = post => dispatch =>
+  API.getAllComments(post).then(data => dispatch(loadComments(data)))

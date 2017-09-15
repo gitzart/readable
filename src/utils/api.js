@@ -68,8 +68,8 @@ export const removePost = post =>
 /* ===========================
     comments
 ============================== */
-export const getAllComments = post =>
-  fetch(`${api}/posts/${post.id}/comments`, { headers })
+export const getAllComments = postId =>
+  fetch(`${api}/posts/${postId}/comments`, { headers })
     .then(res => res.json())
     .then(data => data)
 

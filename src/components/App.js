@@ -1,13 +1,28 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
-import { sortPosts } from '../actions'
+import { getAllCategories, getAllPosts, sortPosts } from '../actions'
 import Home from './Home'
 import Category from './Category'
 import Post from './Post'
 
 class App extends Component {
+  static propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectedSortKey: PropTypes.string.isRequired,
+    loadCategories: PropTypes.func.isRequired,
+    loadPosts: PropTypes.func.isRequired,
+    sortPosts: PropTypes.func.isRequired
+  }
+
+  componentDidMount = () => {
+    this.props.loadCategories()
+    this.props.loadPosts()
+  }
+
   render() {
     return (
       <div>
@@ -43,6 +58,8 @@ function mapStateToProps (state, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
+    loadCategories: () => dispatch(getAllCategories()),
+    loadPosts: () => dispatch(getAllPosts()),
     sortPosts: e => dispatch(sortPosts(e.target.value))
   }
 }

@@ -2,14 +2,19 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getAllComments } from '../actions'
+
+import { getAllComments, sortComments } from '../actions'
 import PostItem from './PostItem'
 import Comment from './Comment'
+import Sort from './Sort'
 
 class Post extends Component {
   static propTypes = {
     post: PropTypes.object,
-    postId: PropTypes.string.isRequired
+    postId: PropTypes.string.isRequired,
+    loadComments: PropTypes.func.isRequired,
+    sortComments: PropTypes.func,
+    commentObj: PropTypes.object
   }
 
   componentDidMount = () => {
@@ -18,13 +23,16 @@ class Post extends Component {
   }
 
   render () {
-    const { post } = this.props
+    const { post, sortComments, commentObj } = this.props
 
     return (
       <div>
         <Link to='/'>Home</Link>
         {post && <PostItem post={post} />}
+
         <hr />
+        <Sort target={commentObj} onChange={sortComments} />
+
         {post && <Comment parentId={post.id} />}
       </div>
     )
@@ -32,17 +40,17 @@ class Post extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  const postId = ownProps.match.params.postId
+  const { postId } = ownProps.match.params
+  const { commentObj } = state.misc
+  const post = ownProps.posts.filter(p => p.id === postId)[0]
 
-  return {
-    post: ownProps.posts.filter(p => p.id === postId)[0],
-    postId
-  }
+  return { postId, post, commentObj }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    loadComments: post => dispatch(getAllComments(post))
+    loadComments: post => dispatch(getAllComments(post)),
+    sortComments: e => dispatch(sortComments(e.target.value))
   }
 }
 

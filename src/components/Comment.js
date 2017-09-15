@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import sortBy from 'sort-by'
 import CommentItem from './CommentItem'
 
 class Comment extends Component {
@@ -29,13 +30,17 @@ class Comment extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  const comments = Object.keys(state.comments)
   const { parentId } = ownProps
+  let { comments } = state
+  const { commentObj } = state.misc
 
-  return {
-    comments: comments.map(c => state.comments[c])
-      .filter(c => c.parentId === parentId)
-  }
+  comments = Object
+    .keys(comments)
+    .map(key => comments[key])
+    .filter(c => c.parentId === parentId)
+    .sort(sortBy(commentObj.currentOption))
+
+  return { comments }
 }
 
 export default connect(mapStateToProps)(Comment)

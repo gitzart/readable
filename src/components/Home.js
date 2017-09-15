@@ -1,39 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import PostItem from './PostItem'
+import Sort from './Sort'
 
 class Home extends Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
     posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    sortPosts: PropTypes.func.isRequired,
-    selectedSortKey: PropTypes.string
+    sortPosts: PropTypes.func,
+    postObj: PropTypes.object
   }
 
   render () {
-    const { categories, posts, sortPosts, selectedSortKey } = this.props
+    const { posts, sortPosts, postObj } = this.props
 
     return (
       <div>
-        <ul>
-          {categories.map(c => (
-            <li key={c.name}>
-              <Link to={`/categories/${c.path}`}>{c.name}</Link>
-            </li>
-          ))}
-        </ul>
-
-        <hr />
-
-        <div>
-          <span>Sort by </span>
-          <select value={selectedSortKey} onChange={sortPosts}>
-            <option value='-voteScore'>Vote Score</option>
-            <option value='title'>Title</option>
-            <option value='-timestamp'>Date</option>
-          </select>
-        </div>
+        <Sort target={postObj} onChange={sortPosts} />
 
         <ul>
           {posts.map(post => (

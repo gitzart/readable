@@ -1,23 +1,16 @@
+// third-party module imports
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Route, withRouter } from 'react-router-dom'
+import { Route, Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
+
+// local module imports
 import { getAllCategories, getAllPosts, sortPosts } from '../actions'
 import Home from './Home'
 import Category from './Category'
 import Post from './Post'
 
 class App extends Component {
-  static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
-    posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    selectedSortKey: PropTypes.string.isRequired,
-    loadCategories: PropTypes.func.isRequired,
-    loadPosts: PropTypes.func.isRequired,
-    sortPosts: PropTypes.func.isRequired
-  }
-
   componentDidMount = () => {
     this.props.loadCategories()
     this.props.loadPosts()
@@ -27,6 +20,16 @@ class App extends Component {
     return (
       <div>
         <h1>Readable</h1>
+
+        <ul>
+          {this.props.categories.map(c => (
+            <li key={c.name}>
+              <Link to={`/categories/${c.path}`}>{c.name}</Link>
+            </li>
+          ))}
+        </ul>
+
+        <hr />
 
         <Route exact path='/' render={() => (
           <Home {...this.props} />
@@ -45,15 +48,16 @@ class App extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  const categories = Object.keys(state.categories)
-  const posts = Object.keys(state.posts)
-  const sortKey = state.misc.sortPosts
+  let { categories, posts } = state
+  const { postObj } = state.misc
 
-  return {
-    categories: categories.map(c => state.categories[c]),
-    posts: posts.map(p => state.posts[p]).sort(sortBy(sortKey)),
-    selectedSortKey: sortKey
-  }
+  categories = Object.keys(categories).map(key => categories[key])
+  posts = Object
+    .keys(posts)
+    .map(key => posts[key])
+    .sort(sortBy(postObj.currentOption))
+
+  return { postObj, categories, posts }
 }
 
 function mapDispatchToProps (dispatch) {

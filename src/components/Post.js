@@ -1,8 +1,10 @@
+// third-party module imports
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+// local module imports
 import { getAllComments, sortComments } from '../actions'
 import PostItem from './PostItem'
 import Comment from './Comment'

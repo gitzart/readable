@@ -42,9 +42,10 @@ class Post extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  const { postId } = ownProps.match.params
+  const { category, postId } = ownProps.match.params
   const { commentObj } = state.misc
-  const post = ownProps.posts.filter(p => p.id === postId)[0]
+  const post = ownProps.posts
+    .filter(p => p.id === postId && p.category === category)[0]
 
   return { postId, post, commentObj }
 }

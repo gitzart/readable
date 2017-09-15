@@ -8,7 +8,7 @@ function PostItem ({ ui = 'full', post }) {
 
   return (
     <div>
-      <Link to={`/posts/${post.id}`}>
+      <Link to={`/${post.category}/${post.id}`}>
         <h4>{post.title}</h4>
       </Link>
       <div>

@@ -24,7 +24,7 @@ class App extends Component {
         <ul>
           {this.props.categories.map(c => (
             <li key={c.name}>
-              <Link to={`/categories/${c.path}`}>{c.name}</Link>
+              <Link to={`/${c.path}`}>{c.name}</Link>
             </li>
           ))}
         </ul>
@@ -35,11 +35,11 @@ class App extends Component {
           <Home {...this.props} />
         )} />
 
-        <Route path='/categories/:category' render={routeProps => (
+        <Route exact path='/:category' render={routeProps => (
           <Category {...this.props} {...routeProps} />
         )} />
 
-        <Route path='/posts/:postId' render={routeProps => (
+        <Route path='/:category/:postId' render={routeProps => (
           <Post {...this.props} {...routeProps} />
         )} />
       </div>

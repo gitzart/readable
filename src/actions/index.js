@@ -19,9 +19,14 @@ export const loadComments = comments => ({
   comments
 })
 
-export const sortPosts = key => ({
+export const sortPosts = option => ({
   type: types.SORT_POSTS,
-  key
+  option
+})
+
+export const sortComments = option => ({
+  type: types.SORT_COMMENTS,
+  option
 })
 
 /* ===========================

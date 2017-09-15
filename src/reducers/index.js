@@ -3,7 +3,8 @@ import {
   LOAD_CATEGORIES,
   LOAD_POSTS,
   LOAD_COMMENTS,
-  SORT_POSTS
+  SORT_POSTS,
+  SORT_COMMENTS
 } from '../constants/ActionTypes'
 
 const categories = (state = {}, action) => {
@@ -34,13 +35,39 @@ const comments = (state = {}, action) => {
 }
 
 const miscState = {
-  sortPosts: '-voteScore'
+  postObj: {
+    options: [
+      { value: '-voteScore', label: 'vote' },
+      { value: 'title', label: 'title' },
+      { value: '-timestamp', label: 'date' }
+    ],
+    currentOption: '-voteScore'
+  },
+  commentObj: {
+    options: [
+      { value: '-voteScore', label: 'vote' },
+      { value: '-timestamp', label: 'date' }
+    ],
+    currentOption: '-voteScore'
+  }
 }
 
 const misc = (state = miscState, action) => {
   switch (action.type) {
     case SORT_POSTS:
-      return { ...state, sortPosts: action.key }
+      return {
+        ...state,
+        postObj: {
+          ...state.postObj, currentOption: action.option
+        }
+      }
+    case SORT_COMMENTS:
+      return {
+        ...state,
+        commentObj: {
+          ...state.commentObj, currentOption: action.option
+        }
+      }
     default:
       return state
   }

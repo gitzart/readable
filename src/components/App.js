@@ -51,7 +51,6 @@ function mapStateToProps (state, ownProps) {
   let { categories, posts } = state
   const { postObj } = state.misc
 
-  categories = Object.keys(categories).map(key => categories[key])
   posts = Object
     .keys(posts)
     .map(key => posts[key])

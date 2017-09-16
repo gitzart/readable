@@ -7,10 +7,10 @@ import {
   SORT_COMMENTS
 } from '../constants/ActionTypes'
 
-const categories = (state = {}, action) => {
+const categories = (state = [], action) => {
   switch (action.type) {
     case LOAD_CATEGORIES:
-      return { ...state, ...action.categories }
+      return action.categories
     default:
       return state
   }
@@ -19,7 +19,10 @@ const categories = (state = {}, action) => {
 const posts = (state = {}, action) => {
   switch (action.type) {
     case LOAD_POSTS:
-      return { ...state, ...action.posts }
+      return action.posts.reduce((posts, post) => {
+        posts[post.id] = post
+        return posts
+      }, {})
     default:
       return state
   }
@@ -28,7 +31,10 @@ const posts = (state = {}, action) => {
 const comments = (state = {}, action) => {
   switch (action.type) {
     case LOAD_COMMENTS:
-      return { ...state, ...action.comments }
+      return action.comments.reduce((comments, comment) => {
+        comments[comment.id] = comment
+        return comments
+      }, {})
     default:
       return state
   }

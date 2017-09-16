@@ -1,31 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import PostItem from './PostItem'
-import Sort from './Sort'
+import PostList from './PostList'
 
 class Home extends Component {
   static propTypes = {
-    posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    sortPosts: PropTypes.func,
-    postObj: PropTypes.object
+    posts: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
   render () {
-    const { posts, sortPosts, postObj } = this.props
-
     return (
-      <div>
-        <Sort target={postObj} onChange={sortPosts} />
-
-        <ul>
-          {posts.map(post => (
-            <li key={post.id}>
-              <PostItem post={post} />
-              <br />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <PostList posts={this.props.posts} />
     )
   }
 }

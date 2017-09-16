@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import sortBy from 'sort-by'
 
 // local module imports
-import { getAllCategories, getAllPosts, sortPosts } from '../actions'
+import { getAllCategories, getAllPosts } from '../actions'
 import Home from './Home'
 import Category from './Category'
 import Post from './Post'
@@ -57,14 +57,13 @@ function mapStateToProps (state, ownProps) {
     .map(key => posts[key])
     .sort(sortBy(postObj.currentOption))
 
-  return { postObj, categories, posts }
+  return { categories, posts }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     loadCategories: () => dispatch(getAllCategories()),
-    loadPosts: () => dispatch(getAllPosts()),
-    sortPosts: e => dispatch(sortPosts(e.target.value))
+    loadPosts: () => dispatch(getAllPosts())
   }
 }
 

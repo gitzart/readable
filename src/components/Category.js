@@ -1,38 +1,23 @@
-// third-party module imports
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-
-// local module imports
-import PostItem from './PostItem'
-import Sort from './Sort'
+import PostList from './PostList'
 
 class Category extends Component {
   static propTypes = {
     category: PropTypes.string.isRequired,
-    posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    sortPosts: PropTypes.func,
-    postObj: PropTypes.object
+    posts: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
   render () {
-    const { category, posts, sortPosts, postObj } = this.props
+    const { category, posts } = this.props
 
     return (
       <div>
         <Link to='/'>Home</Link>
         <h2>{category}</h2>
-        <Sort target={postObj} onChange={sortPosts} />
-
-        <ul>
-          {posts.map(post => (
-            <li key={post.id}>
-              <PostItem post={post} />
-              <br />
-            </li>
-          ))}
-        </ul>
+        <PostList posts={posts} />
       </div>
     )
   }

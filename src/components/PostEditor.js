@@ -28,7 +28,7 @@ class PostEditor extends Component {
         <Modal
           isOpen={postEditorOpen}
           onRequestClose={() => togglePostEditor(false)}
-          contentLabel='Modal'
+          contentLabel='Post Modal'
         >
           <form onSubmit={e => {
             addPost(e)

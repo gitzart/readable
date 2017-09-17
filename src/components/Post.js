@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { getAllComments, sortComments } from '../actions'
 import PostItem from './PostItem'
 import Comment from './Comment'
+import CommentEditor from './CommentEditor'
 import Sort from './Sort'
 
 class Post extends Component {
@@ -31,11 +32,14 @@ class Post extends Component {
       <div>
         <Link to='/'>Home</Link>
         {post && <PostItem post={post} />}
-
         <hr />
-        <Sort target={commentObj} onChange={sortComments} />
-
-        {post && <Comment parentId={post.id} />}
+        {post && (
+          <div>
+            <CommentEditor parentId={post.id} />
+            <Sort target={commentObj} onChange={sortComments} />
+            <Comment parentId={post.id} />
+          </div>
+        )}
       </div>
     )
   }

@@ -34,8 +34,18 @@ export const createPost = post => ({
   post
 })
 
+export const createComment = comment => ({
+  type: types.ADD_COMMENT,
+  comment
+})
+
 export const togglePostEditor = value => ({
   type: types.TOGGLE_POST_EDITOR,
+  value
+})
+
+export const toggleCommentEditor = value => ({
+  type: types.TOGGLE_COMMENT_EDITOR,
   value
 })
 
@@ -53,3 +63,6 @@ export const getAllComments = post => dispatch =>
 
 export const addPost = post => dispatch =>
   API.addPost(post).then(data => dispatch(createPost(data)))
+
+export const addComment = (postId, comment) => dispatch =>
+  API.addComment(postId, comment).then(data => dispatch(createComment(data)))

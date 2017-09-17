@@ -11,7 +11,8 @@ import {
   TOGGLE_COMMENT_EDITOR,
   REMOVE_POST,
   REMOVE_COMMENT,
-  VOTE_POST
+  VOTE_POST,
+  VOTE_COMMENT
 } from '../constants/ActionTypes'
 
 const categories = (state = [], action) => {
@@ -60,6 +61,8 @@ const comments = (state = {}, action) => {
       const newState = { ...state }
       delete newState[action.commentId]
       return newState
+    case VOTE_COMMENT:
+      return { ...state, [comment.id]: comment }
     default:
       return state
   }

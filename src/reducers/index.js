@@ -9,7 +9,8 @@ import {
   ADD_COMMENT,
   TOGGLE_POST_EDITOR,
   TOGGLE_COMMENT_EDITOR,
-  REMOVE_POST
+  REMOVE_POST,
+  REMOVE_COMMENT
 } from '../constants/ActionTypes'
 
 const categories = (state = [], action) => {
@@ -42,6 +43,8 @@ const posts = (state = {}, action) => {
 }
 
 const comments = (state = {}, action) => {
+  const { comment } = action
+
   switch (action.type) {
     case LOAD_COMMENTS:
       return action.comments.reduce((comments, comment) => {
@@ -49,8 +52,11 @@ const comments = (state = {}, action) => {
         return comments
       }, {})
     case ADD_COMMENT:
-      const { comment } = action
       return { ...state, [comment.id]: comment }
+    case REMOVE_COMMENT:
+      const newState = { ...state }
+      delete newState[action.commentId]
+      return newState
     default:
       return state
   }

@@ -1,24 +1,41 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import Time from 'react-time'
+import { removeComment } from '../actions'
 
-function CommentItem ({ comment }) {
-  const dtFormat = `MMM DD'YY [at] HH:mm`
+class CommentItem extends Component {
+  static propTypes = {
+    comment: PropTypes.object.isRequired,
+    removeComment: PropTypes.func.isRequired
+  }
 
-  return (
-    <div>
+  render () {
+    const dtFormat = `MMM DD'YY [at] HH:mm`
+    const { comment, removeComment } = this.props
+
+    return (
       <div>
-        <span>by {comment.author} | </span>
-        <span>votes {comment.voteScore} | </span>
-        <Time value={comment.timestamp} format={dtFormat} />
+        <div>
+          <span>by {comment.author} | </span>
+          <span>votes {comment.voteScore} | </span>
+          <Time value={comment.timestamp} format={dtFormat} />
+        </div>
+        <p>{comment.body}</p>
+        <button onClick={() => removeComment(comment.id)}>delete</button>
       </div>
-      <p>{comment.body}</p>
-    </div>
-  )
+    )
+  }
 }
 
-CommentItem.propTypes = {
-  comment: PropTypes.object.isRequired
+function mapStateToProps (state, ownProps) {
+  return {}
 }
 
-export default CommentItem
+function mapDispatchToProps (dispatch) {
+  return {
+    removeComment: commentId => dispatch(removeComment(commentId))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentItem)

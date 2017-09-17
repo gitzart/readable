@@ -37,7 +37,7 @@ function mapStateToProps (state, ownProps) {
   comments = Object
     .keys(comments)
     .map(key => comments[key])
-    .filter(c => c.parentId === parentId)
+    .filter(c => c.parentId === parentId && !c.deleted)
     .sort(sortBy(commentObj.currentOption))
 
   return { comments }

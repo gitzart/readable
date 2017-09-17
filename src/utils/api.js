@@ -101,7 +101,7 @@ export const editComment = (comment, body) =>
     body: JSON.stringify(body)
   }).then(res => res.json())
 
-export const removeComment = comment =>
-  fetch(`${api}/comments/${comment.id}`, { method: 'DELETE', headers })
+export const removeComment = commentId =>
+  fetch(`${api}/comments/${commentId}`, { method: 'DELETE', headers })
     .then(res => res.json())
     .then(data => data)

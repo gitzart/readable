@@ -3,17 +3,18 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Time from 'react-time'
-import { removePost } from '../actions'
+import { removePost, votePost } from '../actions'
 
 class PostItem extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired,
-    removePost: PropTypes.func.isRequired
+    removePost: PropTypes.func.isRequired,
+    votePost: PropTypes.func.isRequired
   }
 
   render () {
     const dtFormat = `MMM DD'YY [at] HH:mm`
-    const { post, removePost } = this.props
+    const { post, removePost, votePost } = this.props
 
     return (
       <div>
@@ -24,6 +25,10 @@ class PostItem extends Component {
           <span>by {post.author} | </span>
           <span>votes {post.voteScore} | </span>
           <Time value={post.timestamp} format={dtFormat} />
+        </div>
+        <div>
+          <button onClick={() => votePost(post.id, 'upVote')}>vote up</button>
+          <button onClick={() => votePost(post.id, 'downVote')}>vote down</button>
         </div>
         <p>{post.body}</p>
         <button onClick={() => removePost(post.id)}>delete</button>
@@ -38,7 +43,8 @@ function mapStateToProps (state, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    removePost: postId => dispatch(removePost(postId))
+    removePost: postId => dispatch(removePost(postId)),
+    votePost: (postId, option) => dispatch(votePost(postId, option))
   }
 }
 

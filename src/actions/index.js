@@ -59,6 +59,11 @@ export const deleteComment = commentId => ({
   commentId
 })
 
+export const updatePostVote = post => ({
+  type: types.VOTE_POST,
+  post
+})
+
 /* ===========================
     Redux Thunk action creators
 ============================== */
@@ -82,3 +87,6 @@ export const removePost = postId => dispatch =>
 
 export const removeComment = commentId => dispatch =>
   API.removeComment(commentId).then(data => dispatch(deleteComment(commentId)))
+
+export const votePost = (postId, option) => dispatch =>
+  API.votePost(postId, option).then(data => dispatch(updatePostVote(data)))

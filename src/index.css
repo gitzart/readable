@@ -22,3 +22,7 @@ button,
 input {
   color: #ccc;
 }
+
+.ReactModal__Body--open {
+  overflow: hidden;
+}

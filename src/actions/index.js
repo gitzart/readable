@@ -29,6 +29,16 @@ export const sortComments = option => ({
   option
 })
 
+export const createPost = post => ({
+  type: types.ADD_POST,
+  post
+})
+
+export const togglePostEditor = value => ({
+  type: types.TOGGLE_POST_EDITOR,
+  value
+})
+
 /* ===========================
     Redux Thunk action creators
 ============================== */
@@ -40,3 +50,6 @@ export const getAllPosts = () => dispatch =>
 
 export const getAllComments = post => dispatch =>
   API.getAllComments(post).then(data => dispatch(loadComments(data)))
+
+export const addPost = post => dispatch =>
+  API.addPost(post).then(data => dispatch(createPost(data)))

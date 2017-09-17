@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { sortPosts } from '../actions'
 import Sort from './Sort'
 import PostItem from './PostItem'
+import PostEditor from './PostEditor'
 
 function PostList ({ posts, postObj, sortPosts }) {
   return (
     <div>
+      <PostEditor />
       <Sort target={postObj} onChange={sortPosts} />
       <ul>
         {posts.map(post => (

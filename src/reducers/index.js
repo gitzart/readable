@@ -4,7 +4,9 @@ import {
   LOAD_POSTS,
   LOAD_COMMENTS,
   SORT_POSTS,
-  SORT_COMMENTS
+  SORT_COMMENTS,
+  ADD_POST,
+  TOGGLE_POST_EDITOR
 } from '../constants/ActionTypes'
 
 const categories = (state = [], action) => {
@@ -23,6 +25,9 @@ const posts = (state = {}, action) => {
         posts[post.id] = post
         return posts
       }, {})
+    case ADD_POST:
+      const { post } = action
+      return { ...state, [post.id]: post }
     default:
       return state
   }
@@ -55,7 +60,8 @@ const miscState = {
       { value: '-timestamp', label: 'date' }
     ],
     currentOption: '-voteScore'
-  }
+  },
+  postEditorOpen: false
 }
 
 const misc = (state = miscState, action) => {
@@ -74,6 +80,8 @@ const misc = (state = miscState, action) => {
           ...state.commentObj, currentOption: action.option
         }
       }
+    case TOGGLE_POST_EDITOR:
+      return { ...state, postEditorOpen: action.value }
     default:
       return state
   }

@@ -54,6 +54,7 @@ function mapStateToProps (state, ownProps) {
   posts = Object
     .keys(posts)
     .map(key => posts[key])
+    .filter(post => !post.deleted)
     .sort(sortBy(postObj.currentOption))
 
   return { categories, posts }

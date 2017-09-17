@@ -8,7 +8,8 @@ import {
   ADD_POST,
   ADD_COMMENT,
   TOGGLE_POST_EDITOR,
-  TOGGLE_COMMENT_EDITOR
+  TOGGLE_COMMENT_EDITOR,
+  REMOVE_POST
 } from '../constants/ActionTypes'
 
 const categories = (state = [], action) => {
@@ -21,6 +22,8 @@ const categories = (state = [], action) => {
 }
 
 const posts = (state = {}, action) => {
+  const { post } = action
+
   switch (action.type) {
     case LOAD_POSTS:
       return action.posts.reduce((posts, post) => {
@@ -28,8 +31,11 @@ const posts = (state = {}, action) => {
         return posts
       }, {})
     case ADD_POST:
-      const { post } = action
       return { ...state, [post.id]: post }
+    case REMOVE_POST:
+      const newState = { ...state }
+      delete newState[action.postId]
+      return newState
     default:
       return state
   }

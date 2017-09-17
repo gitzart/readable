@@ -49,6 +49,11 @@ export const toggleCommentEditor = value => ({
   value
 })
 
+export const deletePost = postId => ({
+  type: types.REMOVE_POST,
+  postId
+})
+
 /* ===========================
     Redux Thunk action creators
 ============================== */
@@ -66,3 +71,6 @@ export const addPost = post => dispatch =>
 
 export const addComment = (postId, comment) => dispatch =>
   API.addComment(postId, comment).then(data => dispatch(createComment(data)))
+
+export const removePost = postId => dispatch =>
+  API.removePost(postId).then(data => dispatch(deletePost(postId)))

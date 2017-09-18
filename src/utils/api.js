@@ -55,8 +55,8 @@ export const votePost = (postId, option='upVote') =>
     body: JSON.stringify({ option })
   }).then(res => res.json())
 
-export const editPost = (post, body) =>
-  fetch(`${api}/posts/${post.id}`, {
+export const editPost = (postId, body) =>
+  fetch(`${api}/posts/${postId}`, {
     method: 'PUT',
     headers: postHeaders,
     body: JSON.stringify(body)

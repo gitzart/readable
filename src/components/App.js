@@ -9,6 +9,7 @@ import { getAllCategories, getAllPosts } from '../actions'
 import Home from './Home'
 import Category from './Category'
 import Post from './Post'
+import PostEditor from './PostEditor'
 
 class App extends Component {
   componentDidMount = () => {
@@ -17,6 +18,8 @@ class App extends Component {
   }
 
   render() {
+    const { postInAction, currentPostAction } = this.props
+
     return (
       <div>
         <h1>Readable</h1>
@@ -42,6 +45,8 @@ class App extends Component {
         <Route path='/:category/:postId' render={routeProps => (
           <Post {...this.props} {...routeProps} />
         )} />
+
+        <PostEditor task={currentPostAction} post={postInAction} />
       </div>
     )
   }
@@ -49,7 +54,7 @@ class App extends Component {
 
 function mapStateToProps (state, ownProps) {
   let { categories, posts } = state
-  const { postObj } = state.misc
+  const { postObj, postInAction, currentPostAction } = state.misc
 
   posts = Object
     .keys(posts)
@@ -57,7 +62,7 @@ function mapStateToProps (state, ownProps) {
     .filter(post => !post.deleted)
     .sort(sortBy(postObj.currentOption))
 
-  return { categories, posts }
+  return { categories, posts, postInAction, currentPostAction }
 }
 
 function mapDispatchToProps (dispatch) {

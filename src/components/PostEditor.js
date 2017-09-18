@@ -7,50 +7,94 @@ import uuid4 from 'uuid/v4'
 import Modal from 'react-modal'
 
 // local module imports
-import { addPost, togglePostEditor } from '../actions'
+import { addPost, editPost, togglePostEditor } from '../actions'
+
+function PostCreate ({ onSubmit, categories }) {
+  return (
+    <form onSubmit={onSubmit}>
+      <input type='text' name='author' placeholder='author' autoFocus required />
+      <br />
+      <span>category </span>
+      <select name='category'>
+        {categories.map(({ name }) => (
+          <option key={name} value={name}>{name}</option>
+        ))}
+      </select>
+      <br />
+      <input type='text' name='title' placeholder='post title' required />
+      <br />
+      <textarea name='body' placeholder='post here...' required ></textarea>
+      <br />
+      <button>post</button>
+    </form>
+  )
+}
+
+function PostEdit ({ onSubmit, post, categories }) {
+  return (
+    <form onSubmit={onSubmit}>
+      <input type='text' name='author' defaultValue={post.author} placeholder='author' autoFocus required />
+      <br />
+      <span>category </span>
+      <select name='category' defaultValue={post.category}>
+        {categories.map(({ name }) => (
+          <option key={name} defaultValue={name}>{name}</option>
+        ))}
+      </select>
+      <br />
+      <input type='text' name='title' defaultValue={post.title} placeholder='post title' required />
+      <br />
+      <textarea name='body' defaultValue={post.body} placeholder='post here...' required></textarea>
+      <br />
+      <input type='hidden' name='id' defaultValue={post.id} />
+      <button>save</button>
+    </form>
+  )
+}
 
 class PostEditor extends Component {
   static propTypes = {
-    addPost: PropTypes.func,
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    post: PropTypes.object,
     postEditorOpen: PropTypes.bool.isRequired,
-    togglePostEditor: PropTypes.func.isRequired
+    addPost: PropTypes.func,
+    editPost: PropTypes.func,
+    togglePostEditor: PropTypes.func.isRequired,
   }
 
   render () {
     const {
-      addPost, categories, postEditorOpen, togglePostEditor
+      addPost, categories, postEditorOpen, togglePostEditor,
+      editPost, post, task
     } = this.props
 
+    const onCreatePost = e => {
+      addPost(e)
+      togglePostEditor(false)
+    }
+
+    const onEditPost = e => {
+      editPost(e)
+      togglePostEditor(false)
+    }
+
+    const createProps = { onSubmit: onCreatePost, categories }
+    const editProps = { onSubmit: onEditPost, categories, post }
+
     return (
-      <div>
-        <button onClick={() => togglePostEditor(true)}>Add a new post</button>
-        <Modal
-          isOpen={postEditorOpen}
-          onRequestClose={() => togglePostEditor(false)}
-          contentLabel='Post Modal'
-        >
-          <form onSubmit={e => {
-            addPost(e)
-            togglePostEditor(false)
-          }}>
-            <input type='text' name='author' placeholder='author' autoFocus required />
-            <br />
-            <span>category </span>
-            <select name='category'>
-              {categories.map(({ name }) => (
-                <option key={name} value={name}>{name}</option>
-              ))}
-            </select>
-            <br />
-            <input type='text' name='title' placeholder='post title' required />
-            <br />
-            <textarea name='body' placeholder='post here...' required ></textarea>
-            <br />
-            <button>post</button>
-          </form>
-        </Modal>
-      </div>
+      <Modal
+        isOpen={postEditorOpen}
+        onRequestClose={() => togglePostEditor(false)}
+        contentLabel='Post Modal'
+      >
+        {task === 'create' && (
+          <PostCreate {...createProps} />
+        )}
+
+        {task === 'edit' && (
+          <PostEdit {...editProps} />
+        )}
+      </Modal>
     )
   }
 }
@@ -58,8 +102,9 @@ class PostEditor extends Component {
 function mapStateToProps (state, ownProps) {
   const { categories } = state
   const { postEditorOpen } = state.misc
+  const { post } = ownProps
 
-  return { categories, postEditorOpen }
+  return { categories, postEditorOpen, post }
 }
 
 function mapDispatchToProps (dispatch) {
@@ -72,6 +117,11 @@ function mapDispatchToProps (dispatch) {
       post.timestamp = Date.now()
 
       dispatch(addPost(post))
+    },
+    editPost: e => {
+      e.preventDefault()
+      const post = serialize(e.target, { hash: true })
+      dispatch(editPost(post.id, post))
     },
     togglePostEditor: value => dispatch(togglePostEditor(value))
   }

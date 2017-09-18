@@ -12,7 +12,8 @@ import {
   REMOVE_POST,
   REMOVE_COMMENT,
   VOTE_POST,
-  VOTE_COMMENT
+  VOTE_COMMENT,
+  EDIT_POST
 } from '../constants/ActionTypes'
 
 const categories = (state = [], action) => {
@@ -40,6 +41,8 @@ const posts = (state = {}, action) => {
       delete newState[action.postId]
       return newState
     case VOTE_POST:
+      return { ...state, [post.id]: post }
+    case EDIT_POST:
       return { ...state, [post.id]: post }
     default:
       return state
@@ -85,7 +88,9 @@ const miscState = {
     currentOption: '-voteScore'
   },
   postEditorOpen: false,
-  commentEditorOpen: false
+  commentEditorOpen: false,
+  postInAction: undefined,
+  currentPostAction: undefined
 }
 
 const misc = (state = miscState, action) => {
@@ -105,7 +110,12 @@ const misc = (state = miscState, action) => {
         }
       }
     case TOGGLE_POST_EDITOR:
-      return { ...state, postEditorOpen: action.value }
+      return {
+        ...state,
+        postEditorOpen: action.option,
+        postInAction: action.post,
+        currentPostAction: action.action
+      }
     case TOGGLE_COMMENT_EDITOR:
       return { ...state, commentEditorOpen: action.value }
     default:

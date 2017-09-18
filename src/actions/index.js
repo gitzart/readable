@@ -39,9 +39,13 @@ export const createComment = comment => ({
   comment
 })
 
-export const togglePostEditor = value => ({
+export const togglePostEditor = (
+  option, action = undefined, post = undefined
+) => ({
   type: types.TOGGLE_POST_EDITOR,
-  value
+  option,
+  action,
+  post
 })
 
 export const toggleCommentEditor = value => ({
@@ -69,33 +73,48 @@ export const updateCommentVote = comment => ({
   comment
 })
 
+export const updatePost = post => ({
+  type: types.EDIT_POST,
+  post
+})
+
 /* ===========================
     Redux Thunk action creators
 ============================== */
 export const getAllCategories = () => dispatch =>
-  API.getAllCategories().then(data => dispatch(loadCategories(data)))
+  API.getAllCategories()
+    .then(data => dispatch(loadCategories(data)))
 
 export const getAllPosts = () => dispatch =>
   API.getAllPosts().then(data => dispatch(loadPosts(data)))
 
 export const getAllComments = post => dispatch =>
-  API.getAllComments(post).then(data => dispatch(loadComments(data)))
+  API.getAllComments(post)
+    .then(data => dispatch(loadComments(data)))
 
 export const addPost = post => dispatch =>
   API.addPost(post).then(data => dispatch(createPost(data)))
 
 export const addComment = (postId, comment) => dispatch =>
-  API.addComment(postId, comment).then(data => dispatch(createComment(data)))
+  API.addComment(postId, comment)
+    .then(data => dispatch(createComment(data)))
 
 export const removePost = postId => dispatch =>
-  API.removePost(postId).then(data => dispatch(deletePost(postId)))
+  API.removePost(postId)
+    .then(data => dispatch(deletePost(postId)))
 
 export const removeComment = commentId => dispatch =>
-  API.removeComment(commentId).then(data => dispatch(deleteComment(commentId)))
+  API.removeComment(commentId)
+    .then(data => dispatch(deleteComment(commentId)))
 
 export const votePost = (postId, option) => dispatch =>
-  API.votePost(postId, option).then(data => dispatch(updatePostVote(data)))
+  API.votePost(postId, option)
+    .then(data => dispatch(updatePostVote(data)))
 
 export const voteComment = (commentId, option) => dispatch =>
   API.voteComment(commentId, option)
     .then(data => dispatch(updateCommentVote(data)))
+
+export const editPost = (postId, post) => dispatch =>
+  API.editPost(postId, post)
+    .then(data => dispatch(updatePost(data)))

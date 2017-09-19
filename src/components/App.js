@@ -1,5 +1,6 @@
 // third-party module imports
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Route, Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
@@ -12,20 +13,28 @@ import PostList from './PostList'
 import PostEditor from './PostEditor'
 
 class App extends Component {
-  componentDidMount = () => {
-    this.props.loadCategories()
-    this.props.loadPosts()
+  static propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    posts: PropTypes.arrayOf(PropTypes.object).isRequired
+  }
+
+  componentDidMount () {
+    const { dispatch } = this.props
+    dispatch(getAllCategories())
+    dispatch(getAllPosts())
   }
 
   render() {
-    const { postInAction, currentPostAction } = this.props
+    const {
+      categories, posts, postInAction, currentPostAction
+    } = this.props
 
     return (
       <div>
         <h1>Readable</h1>
 
         <ul>
-          {this.props.categories.map(c => (
+          {categories.map(c => (
             <li key={c.name}>
               <Link to={`/${c.path}`}>{c.name}</Link>
             </li>
@@ -35,11 +44,11 @@ class App extends Component {
         <hr />
 
         <Route exact path='/' render={() => (
-          <PostList posts={this.props.posts} />
+          <PostList posts={posts} />
         )} />
 
-        <Route exact path='/:category' render={routeProps => (
-          <Category {...this.props} {...routeProps} />
+        <Route exact path='/:category' render={({ match }) => (
+          <Category posts={posts} match={match} />
         )} />
 
         <Route path='/:category/:postId' render={routeProps => (
@@ -65,11 +74,4 @@ function mapStateToProps (state, ownProps) {
   return { categories, posts, postInAction, currentPostAction }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    loadCategories: () => dispatch(getAllCategories()),
-    loadPosts: () => dispatch(getAllPosts())
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withRouter(connect(mapStateToProps)(App))

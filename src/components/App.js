@@ -1,16 +1,16 @@
 // third-party module imports
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Route, Link, withRouter } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
 
 // local module imports
 import { getAllCategories, getAllPosts } from '../actions'
-import Category from './Category'
 import Post from './Post'
 import PostList from './PostList'
 import PostEditor from './PostEditor'
+import Nav from './Nav'
 
 class App extends Component {
   static propTypes = {
@@ -24,6 +24,10 @@ class App extends Component {
     dispatch(getAllPosts())
   }
 
+  getCategoryPosts = (category) => (
+    this.props.posts.filter(p => p.category === category)
+  )
+
   render() {
     const {
       categories, posts, postInAction, currentPostAction
@@ -33,26 +37,28 @@ class App extends Component {
       <main>
         <h1>Readable</h1>
 
-        <ul>
-          {categories.map(c => (
-            <li key={c.name}>
-              <Link to={`/${c.path}`}>{c.name}</Link>
-            </li>
-          ))}
-        </ul>
-
-        <hr />
-
-        <Route exact path='/' render={() => (
-          <PostList posts={posts} />
+        <Route exact path='/' render={({ match }) => (
+          <div>
+            <Nav match={match} navList={categories} />
+            <PostList posts={posts} />
+          </div>
         )} />
 
-        <Route exact path='/:category' render={({ match }) => (
-          <Category posts={posts} match={match} />
-        )} />
+        <Route exact path='/:category' render={({ match }) => {
+          const { category } = match.params
+          return (
+            <div>
+              <Nav match={match} navList={categories} />
+              <PostList posts={this.getCategoryPosts(category)} />
+            </div>
+          )
+        }} />
 
         <Route path='/:category/:postId' render={routeProps => (
-          <Post {...this.props} {...routeProps} />
+          <div>
+            <Nav match={routeProps.match} navList={categories} />
+            <Post {...this.props} {...routeProps} />
+          </div>
         )} />
 
         <PostEditor task={currentPostAction} post={postInAction} />

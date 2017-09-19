@@ -26,12 +26,18 @@ li {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 li {
   list-style-type: none;
 }
 
 main {
-  margin: 1rem 2rem;
+  margin: 1rem auto;
+  padding: 0 10px;
+  max-width: 800px;
 }
 
 .ReactModal__Body--open {
@@ -42,6 +48,19 @@ main {
   background: transparent;
   border: none;
   padding: 0;
+}
+
+nav {
+  margin-bottom: 1.5rem;
+}
+
+.nav-item {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.current-path {
+  border-bottom: 3px solid yellow;
 }
 
 /* ===========================
@@ -56,12 +75,6 @@ main {
   margin-bottom: 1.5rem;
   max-width: 600px;
   min-width: 300px;
-}
-
-.post-item.detail {
-  background-color: transparent;
-  border-radius: 0;
-  border: none;
 }
 
 .post-item__title {

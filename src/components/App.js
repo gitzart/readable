@@ -30,7 +30,7 @@ class App extends Component {
     } = this.props
 
     return (
-      <div>
+      <main>
         <h1>Readable</h1>
 
         <ul>
@@ -56,7 +56,7 @@ class App extends Component {
         )} />
 
         <PostEditor task={currentPostAction} post={postInAction} />
-      </div>
+      </main>
     )
   }
 }

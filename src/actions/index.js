@@ -40,7 +40,7 @@ export const createComment = comment => ({
 })
 
 export const togglePostEditor = (
-  option, action = undefined, post = undefined
+  { option, action = undefined, post = undefined }
 ) => ({
   type: types.TOGGLE_POST_EDITOR,
   option,

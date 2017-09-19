@@ -4,25 +4,125 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   background-color: #252525;
   color: #ccc;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font: 16px/1.5rem sans-serif;
 }
 
 a,
 button,
 input {
   color: #ccc;
+  outline: none;
+}
+
+ul,
+ol,
+li {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+main {
+  margin: 1rem 2rem;
 }
 
 .ReactModal__Body--open {
   overflow: hidden;
+}
+
+.icon {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* ===========================
+    PostItem
+============================== */
+.post-item {
+  background-color: #282828;
+  border-radius: 3px;
+  border: 1px solid #303030;
+  position: relative;
+  padding: 10px;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+  min-width: 300px;
+}
+
+.post-item.detail {
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.post-item__title {
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.post-item__title.detail {
+  font-size: 1.2rem;
+}
+
+.post-item__bottom {
+  display: flex;
+  font-size: .8rem;
+}
+
+.post-item__vote {
+  background-color: #353535;
+  margin-right: 10px;
+}
+
+.post-item__vote-item {
+  margin: 0 2px;
+}
+
+.post-item__vote-item.icon {
+  cursor: pointer;
+}
+
+.post-item__meta {
+  background-color: #353535;
+  line-height: 30px;
+}
+
+.post-item__meta-item {
+  margin: 7px;
+}
+
+.post-item__actions {
+  background-color: transparent;
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  width: 80px;
+  text-align: right;
+  font-size: .9rem;
+}
+
+.post-item__actions-options {
+  border-top: 1px solid #404040;
+  background-color: #353535;
+  padding: 7px 0;
+}
+
+.post-item__actions-options > div {
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.post-item__actions-options > div:hover {
+  background-color: #303030;
 }

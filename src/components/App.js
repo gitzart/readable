@@ -6,9 +6,9 @@ import sortBy from 'sort-by'
 
 // local module imports
 import { getAllCategories, getAllPosts } from '../actions'
-import Home from './Home'
 import Category from './Category'
 import Post from './Post'
+import PostList from './PostList'
 import PostEditor from './PostEditor'
 
 class App extends Component {
@@ -35,7 +35,7 @@ class App extends Component {
         <hr />
 
         <Route exact path='/' render={() => (
-          <Home {...this.props} />
+          <PostList posts={this.props.posts} />
         )} />
 
         <Route exact path='/:category' render={routeProps => (

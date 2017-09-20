@@ -1,7 +1,10 @@
+// third-party module imports
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import CreateIcon from 'react-icons/lib/md/create'
+
+// local module imports
 import { sortPosts, togglePostEditor } from '../actions'
 import Sort from './Sort'
 import PostItem from './PostItem'

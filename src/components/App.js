@@ -7,7 +7,7 @@ import sortBy from 'sort-by'
 
 // local module imports
 import { getAllCategories, getAllPosts } from '../actions'
-import Post from './Post'
+import PostDetail from './PostDetail'
 import PostList from './PostList'
 import PostEditor from './PostEditor'
 import Nav from './Nav'
@@ -24,8 +24,14 @@ class App extends Component {
     dispatch(getAllPosts())
   }
 
-  getCategoryPosts = (category) => (
+  getCategoryPosts = category => (
     this.props.posts.filter(p => p.category === category)
+  )
+
+  getPost = (category, postId) => (
+    this.props.posts.filter(p => (
+      p.id === postId && p.category === category
+    ))[0]
   )
 
   render() {
@@ -54,12 +60,17 @@ class App extends Component {
           )
         }} />
 
-        <Route path='/:category/:postId' render={routeProps => (
-          <div>
-            <Nav match={routeProps.match} navList={categories} />
-            <Post {...this.props} {...routeProps} />
-          </div>
-        )} />
+        <Route path='/:category/:postId' render={({ match }) => {
+          const { category, postId } = match.params
+          const post = this.getPost(category, postId)
+
+          return (
+            <div>
+              <Nav match={match} navList={categories} />
+              <PostDetail post={post} match={match} />
+            </div>
+          )
+        }} />
 
         <PostEditor task={currentPostAction} post={postInAction} />
       </main>

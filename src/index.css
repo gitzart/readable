@@ -13,10 +13,29 @@ body {
 }
 
 a,
-button,
 input {
   color: #ccc;
   outline: none;
+}
+
+button {
+  outline: none;
+}
+
+input,
+textarea {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  padding: 10px 15px;
+  font-size: .9rem;
+  display: block;
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
 }
 
 ul,
@@ -47,9 +66,13 @@ main {
 .icon {
   background: transparent;
   border: none;
+  color: #ccc;
   padding: 0;
 }
 
+/* ===========================
+    Nav
+============================== */
 nav {
   margin-bottom: 1.5rem;
 }
@@ -122,6 +145,7 @@ nav {
   width: 80px;
   text-align: right;
   font-size: .9rem;
+  z-index: 10;
 }
 
 .post-item__actions-options {
@@ -138,4 +162,93 @@ nav {
 
 .post-item__actions-options > div:hover {
   background-color: #303030;
+}
+
+/* ===========================
+    Editor
+============================== */
+.editor-trigger {
+  background-color: #353535;
+  border-radius: 3px;
+  color: #888;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.editor-trigger:hover {
+  background-color: #373737;
+}
+
+.sort-btn {
+  font-size: .9rem;
+  margin-bottom: 1rem;
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(35, 35, 35, 0.85);
+  z-index: 11;
+}
+
+.modal {
+  position: relative;
+  top: 7rem;
+  border: 1px solid rgb(45, 45, 45);
+  background: #303030;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
+  max-width: 600px;
+  margin: auto;
+  z-index: 12;
+}
+
+.editor-form {
+  margin: auto;
+  width: 300px;
+}
+
+.editor-form-item {
+  background-color: rgb(37, 37, 37);
+  color: #ccc;
+  margin-bottom: .7rem;
+}
+
+textarea.editor-form-item {
+  height: 100px;
+}
+
+.editor-form-select {
+  margin-bottom: .7rem;
+}
+
+.editor-form-btn {
+  background-color: yellow;
+  border: none;
+  border-radius: 3px;
+  color: #000;
+  padding: 5px 13px;
+  font-weight: bold;
+  font-size: .9rem;
+  display: inline-block;
+  cursor: pointer;
+  margin: auto;
+  float: right;
+}
+
+.editor-form-btn:hover {
+  background-color: rgb(202, 210, 49);
+}
+
+.editor-form-btn:active {
+  background-color: yellow;
 }

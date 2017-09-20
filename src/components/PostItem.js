@@ -35,7 +35,7 @@ class PostItem extends Component {
     const { actionOptions } = this.state
 
     return (
-      <div className='post-item detail'>
+      <div className='post-item'>
         {type === 'detail'
           ? <h4 className='post-item__title detail'>{post.title}</h4>
           : <Link to={`/${post.category}/${post.id}`}>
@@ -78,7 +78,7 @@ class PostItem extends Component {
 
         <div
           className='post-item__actions'
-          style={{backgroundColor: actionOptions && '#353535' }}
+          style={{ backgroundColor: actionOptions && '#353535' }}
         >
           <button className='icon' onClick={this.toggleActionOptions}>
             <MoreHoriz size='30' />

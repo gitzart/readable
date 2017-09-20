@@ -11,43 +11,88 @@ import { addPost, editPost, togglePostEditor } from '../actions'
 
 function PostCreate ({ onSubmit, categories }) {
   return (
-    <form onSubmit={onSubmit}>
-      <input type='text' name='author' placeholder='author' autoFocus required />
-      <br />
-      <span>category </span>
-      <select name='category'>
-        {categories.map(({ name }) => (
-          <option key={name} value={name}>{name}</option>
-        ))}
-      </select>
-      <br />
-      <input type='text' name='title' placeholder='post title' required />
-      <br />
-      <textarea name='body' placeholder='post here...' required ></textarea>
-      <br />
-      <button>post</button>
+    <form className='editor-form' onSubmit={onSubmit}>
+      <div className='editor-form-select'>
+        <span>category </span>
+        <select name='category'>
+          {categories.map(({ name }) => (
+            <option key={name} value={name}>{name}</option>
+          ))}
+        </select>
+      </div>
+
+      <input
+        className='editor-form-item'
+        type='text'
+        name='author'
+        placeholder='your precious name'
+        autoFocus
+        required
+      />
+
+      <input
+        className='editor-form-item'
+        type='text'
+        name='title'
+        placeholder='title goes here'
+        required
+      />
+
+      <textarea
+        className='editor-form-item'
+        name='body'
+        placeholder={`now it's time to write something new`}
+        required
+      >
+      </textarea>
+
+      <button className='editor-form-btn'>post</button>
     </form>
   )
 }
 
 function PostEdit ({ onSubmit, post, categories }) {
   return (
-    <form onSubmit={onSubmit}>
-      <input type='text' name='author' defaultValue={post.author} placeholder='author' autoFocus required />
-      <br />
-      <span>category </span>
-      <select name='category' defaultValue={post.category}>
-        {categories.map(({ name }) => (
-          <option key={name} defaultValue={name}>{name}</option>
-        ))}
-      </select>
-      <br />
-      <input type='text' name='title' defaultValue={post.title} placeholder='post title' required />
-      <br />
-      <textarea name='body' defaultValue={post.body} placeholder='post here...' required></textarea>
-      <br />
+    <form className='editor-form' onSubmit={onSubmit}>
+      <div className='editor-form-select'>
+        <span>category </span>
+        <select name='category' defaultValue={post.category}>
+          {categories.map(({ name }) => (
+            <option key={name} value={name}>{name}</option>
+          ))}
+        </select>
+      </div>
+
+      <input
+        className='editor-form-item'
+        type='text'
+        name='author'
+        defaultValue={post.author}
+        placeholder='your precious name'
+        autoFocus
+        required
+      />
+
+      <input
+        className='editor-form-item'
+        type='text'
+        name='title'
+        defaultValue={post.title}
+        placeholder='title goes here'
+        required
+      />
+
+      <textarea
+        className='editor-form-item'
+        name='body'
+        defaultValue={post.body}
+        placeholder={`now it's time to write something new`}
+        required
+      >
+      </textarea>
+
       <input type='hidden' name='id' defaultValue={post.id} />
-      <button>save</button>
+      <button className='editor-form-btn'>save</button>
     </form>
   )
 }
@@ -57,25 +102,25 @@ class PostEditor extends Component {
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
     post: PropTypes.object,
     postEditorOpen: PropTypes.bool.isRequired,
-    addPost: PropTypes.func,
-    editPost: PropTypes.func,
-    togglePostEditor: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired,
+    edit: PropTypes.func.isRequired,
+    toggleEditor: PropTypes.func.isRequired,
   }
 
   render () {
     const {
-      addPost, categories, postEditorOpen, togglePostEditor,
-      editPost, post, task
+      add, edit, categories, post,
+      task, postEditorOpen, toggleEditor
     } = this.props
 
     const onCreatePost = e => {
-      addPost(e)
-      togglePostEditor(false)
+      add(e)
+      toggleEditor({ option: false })
     }
 
     const onEditPost = e => {
-      editPost(e)
-      togglePostEditor(false)
+      edit(e)
+      toggleEditor({ option: false })
     }
 
     const createProps = { onSubmit: onCreatePost, categories }
@@ -83,8 +128,10 @@ class PostEditor extends Component {
 
     return (
       <Modal
+        className='modal'
+        overlayClassName='overlay'
         isOpen={postEditorOpen}
-        onRequestClose={() => togglePostEditor(false)}
+        onRequestClose={() => toggleEditor({ option: false })}
         contentLabel='Post Modal'
       >
         {task === 'create' && (
@@ -109,7 +156,7 @@ function mapStateToProps (state, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    addPost: e => {
+    add: e => {
       e.preventDefault()
 
       const post = serialize(e.target, { hash: true })
@@ -118,12 +165,12 @@ function mapDispatchToProps (dispatch) {
 
       dispatch(addPost(post))
     },
-    editPost: e => {
+    edit: e => {
       e.preventDefault()
       const post = serialize(e.target, { hash: true })
       dispatch(editPost(post.id, post))
     },
-    togglePostEditor: value => dispatch(togglePostEditor(value))
+    toggleEditor: obj => dispatch(togglePostEditor(obj))
   }
 }
 

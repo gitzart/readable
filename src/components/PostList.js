@@ -1,37 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import CreateIcon from 'react-icons/lib/md/create'
 import { sortPosts, togglePostEditor } from '../actions'
 import Sort from './Sort'
 import PostItem from './PostItem'
 
 function PostList (props) {
-  const { posts, postObj, sortPosts, togglePostEditor } = props
+  const { posts, postObj, sort, toggleEditor } = props
 
   return (
     <div>
-      <button onClick={() => (
-        togglePostEditor(true, 'create')
-      )}>Add a new post</button>
+      <div
+        className='editor-trigger'
+        onClick={() => toggleEditor({ option: true, action: 'create' })}
+      >
+        <CreateIcon size='20' /> Write something new here...
+      </div>
 
-      <Sort target={postObj} onChange={sortPosts} />
+      <Sort target={postObj} onChange={sort} />
 
-      <ul>
+      <div>
         {posts.map(post => (
-          <li key={post.id}>
-            <PostItem post={post} />
-            <br />
-          </li>
+          <PostItem key={post.id} post={post} />
         ))}
-      </ul>
+      </div>
     </div>
   )
 }
 
 PostList.propTypes = {
   postObj: PropTypes.object.isRequired,
-  sortPosts: PropTypes.func.isRequired,
-  togglePostEditor: PropTypes.func.isRequired
+  sort: PropTypes.func.isRequired,
+  toggleEditor: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state, ownProps) {
@@ -40,10 +41,8 @@ function mapStateToProps (state, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    sortPosts: e => dispatch(sortPosts(e.target.value)),
-    togglePostEditor: (option, action) => (
-      dispatch(togglePostEditor(option, action))
-    )
+    sort: e => dispatch(sortPosts(e.target.value)),
+    toggleEditor: obj => dispatch(togglePostEditor(obj))
   }
 }
 

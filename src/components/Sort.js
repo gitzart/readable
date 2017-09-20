@@ -5,7 +5,7 @@ function Sort ({ target, onChange }) {
   const { currentOption, options } = target
 
   return (
-    <div>
+    <div className='sort-btn'>
       <span>sort by </span>
       <select value={currentOption} onChange={onChange}>
         {options.map(({ value, label }, key) => (

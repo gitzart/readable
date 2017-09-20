@@ -9,9 +9,7 @@ import { sortPosts, togglePostEditor } from '../actions'
 import Sort from './Sort'
 import PostItem from './PostItem'
 
-function PostList (props) {
-  const { posts, postObj, sort, toggleEditor } = props
-
+function PostList ({ posts, postObj, sort, toggleEditor }) {
   return (
     <div>
       <div
@@ -33,13 +31,16 @@ function PostList (props) {
 }
 
 PostList.propTypes = {
+  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
   postObj: PropTypes.object.isRequired,
   sort: PropTypes.func.isRequired,
   toggleEditor: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state, ownProps) {
-  return { postObj: state.misc.postObj }
+  const { postObj } = state.misc
+  const { posts } = ownProps
+  return { postObj, posts }
 }
 
 function mapDispatchToProps (dispatch) {

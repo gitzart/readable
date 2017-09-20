@@ -86,9 +86,10 @@ class PostItem extends Component {
 
           {actionOptions && (
             <div className='post-item__actions-options'>
-              <div onClick={() => (
+              <div onClick={() => {
                 toggleEditor({ option: true, action: 'edit', post })
-              )}>
+                this.toggleActionOptions()
+              }}>
                 edit
               </div>
               <div onClick={() => remove(post.id)}>delete</div>

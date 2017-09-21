@@ -13,7 +13,8 @@ import {
   REMOVE_COMMENT,
   VOTE_POST,
   VOTE_COMMENT,
-  EDIT_POST
+  EDIT_POST,
+  EDIT_COMMENT
 } from '../constants/ActionTypes'
 
 const categories = (state = [], action) => {
@@ -65,6 +66,8 @@ const comments = (state = {}, action) => {
       delete newState[action.commentId]
       return newState
     case VOTE_COMMENT:
+      return { ...state, [comment.id]: comment }
+    case EDIT_COMMENT:
       return { ...state, [comment.id]: comment }
     default:
       return state

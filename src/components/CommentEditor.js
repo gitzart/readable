@@ -7,7 +7,7 @@ import uuid4 from 'uuid/v4'
 import Modal from 'react-modal'
 
 // local module imports
-import { addComment, toggleCommentEditor } from '../actions'
+import { addComment, editComment, toggleCommentEditor } from '../actions'
 
 function CommentCreate ({ onSubmit }) {
   return (
@@ -34,10 +34,30 @@ function CommentCreate ({ onSubmit }) {
   )
 }
 
-function CommentEdit ({ onSubmit }) {
+function CommentEdit ({ onSubmit, comment }) {
   return (
-    <form onSubmit={onSubmit}>
+    <form className='editor-form' onSubmit={onSubmit}>
+      <input
+        className='editor-form-item'
+        type='text'
+        name='author'
+        defaultValue={comment.author}
+        placeholder='your precious name'
+        autoFocus
+        required
+      />
+      
+      <textarea
+        className='editor-form-item'
+        name='body'
+        defaultValue={comment.body}
+        placeholder={`now it's time to write something new`}
+        required
+      >
+      </textarea>
 
+      <input type='hidden' name='id' defaultValue={comment.id} />
+      <button className='editor-form-btn'>save</button>
     </form>
   )
 }
@@ -46,7 +66,8 @@ class CommentEditor extends Component {
   static propTypes = {
     action: PropTypes.string,
     parentPost: PropTypes.object,
-    add: PropTypes.func,
+    add: PropTypes.func.isRequired,
+    edit: PropTypes.func.isRequired,
     commentEditorOpen: PropTypes.bool.isRequired,
     toggleEditor: PropTypes.func.isRequired
   }
@@ -57,12 +78,19 @@ class CommentEditor extends Component {
     toggleEditor({ option: false })
   }
 
+  onEditComment = e => {
+    const { edit, toggleEditor } = this.props
+    edit(e)
+    toggleEditor({ option: false })
+  }
+
   render () {
     const {
-      action, commentEditorOpen, toggleEditor
+      action, comment, commentEditorOpen, toggleEditor
     } = this.props
 
     const createProps = { onSubmit: this.onCreateComment }
+    const editProps = { onSubmit: this.onEditComment, comment }
 
     return (
       <div>
@@ -74,7 +102,7 @@ class CommentEditor extends Component {
           contentLabel='Comment Modal'
         >
           {action === 'create' && <CommentCreate {...createProps} />}
-          {action === 'edit' && <CommentEdit />}
+          {action === 'edit' && <CommentEdit {...editProps} />}
         </Modal>
       </div>
     )
@@ -82,10 +110,10 @@ class CommentEditor extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  const { action, parentPost } = ownProps
+  const { action, comment, parentPost } = ownProps
   const { commentEditorOpen } = state.misc
 
-  return { action, parentPost, commentEditorOpen }
+  return { action, comment, parentPost, commentEditorOpen }
 }
 
 function mapDispatchToProps (dispatch) {
@@ -98,6 +126,11 @@ function mapDispatchToProps (dispatch) {
       comment.timestamp = Date.now()
 
       dispatch(addComment(parentPost.id, comment))
+    },
+    edit: e => {
+      e.preventDefault()
+      const comment = serialize(e.target, { hash: true })
+      dispatch(editComment(comment.id, comment))
     },
     toggleEditor: obj => dispatch(toggleCommentEditor(obj))
   }

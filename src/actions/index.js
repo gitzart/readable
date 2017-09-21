@@ -84,6 +84,11 @@ export const updatePost = post => ({
   post
 })
 
+export const updateComment = comment => ({
+  type: types.EDIT_COMMENT,
+  comment
+})
+
 /* ===========================
     Redux Thunk action creators
 ============================== */
@@ -124,3 +129,7 @@ export const voteComment = (commentId, option) => dispatch =>
 export const editPost = (postId, post) => dispatch =>
   API.editPost(postId, post)
     .then(data => dispatch(updatePost(data)))
+
+export const editComment = (commentId, comment) => dispatch =>
+  API.editComment(commentId, comment)
+    .then(data => dispatch(updateComment(data)))

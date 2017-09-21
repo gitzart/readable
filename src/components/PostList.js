@@ -19,7 +19,15 @@ function PostList ({ posts, postObj, sort, toggleEditor }) {
         <CreateIcon size='20' /> Write something new here...
       </div>
 
-      <Sort target={postObj} onChange={sort} />
+      <div className='list-data__top'>
+        <p className='list-data__meta'>
+          {posts.length} posts
+        </p>
+
+        {posts.length !== 0
+          && <Sort target={postObj} onChange={sort} />
+        }
+      </div>
 
       <div>
         {posts.map(post => (

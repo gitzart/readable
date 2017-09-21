@@ -16,10 +16,6 @@ function CommentList (props) {
 
   return (
     <div>
-      <p className='list-data__meta'>
-        {comments.length} comments
-      </p>
-
       <div
         className='editor-trigger'
         onClick={() => toggleEditor(
@@ -29,9 +25,15 @@ function CommentList (props) {
         <CommentIcon size='20' /> What do you think?
       </div>
 
-      {comments.length !== 0
-        && <Sort target={commentObj} onChange={sort} />
-      }
+      <div className='list-data__top'>
+        <p className='list-data__meta'>
+          {comments.length} comments
+        </p>
+
+        {comments.length !== 0
+          && <Sort target={commentObj} onChange={sort} />
+        }
+      </div>
 
       <div>
         {comments.map(comment => (

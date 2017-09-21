@@ -87,8 +87,9 @@ nav {
 }
 
 /* ===========================
-    PostItem
+    PostItem, CommentItem
 ============================== */
+.comment-item,
 .post-item {
   background-color: #282828;
   border-radius: 3px;
@@ -98,6 +99,10 @@ nav {
   margin-bottom: 1.5rem;
   max-width: 600px;
   min-width: 300px;
+}
+
+.comment-item {
+  max-width: 560px;
 }
 
 .post-item__title {
@@ -110,33 +115,44 @@ nav {
   font-size: 1.2rem;
 }
 
+.comment-item__body {
+  margin-top: 0;
+}
+
+.comment-item__bottom,
 .post-item__bottom {
   display: flex;
   font-size: .8rem;
 }
 
+.comment-item__vote,
 .post-item__vote {
   background-color: #353535;
   margin-right: 10px;
 }
 
+.comment-item__vote-item,
 .post-item__vote-item {
   margin: 0 2px;
 }
 
+.comment-item__vote-item.icon,
 .post-item__vote-item.icon {
   cursor: pointer;
 }
 
+.comment-item__meta,
 .post-item__meta {
   background-color: #353535;
   line-height: 30px;
 }
 
+.comment-item__meta-item,
 .post-item__meta-item {
   margin: 7px;
 }
 
+.comment-item__actions,
 .post-item__actions {
   background-color: transparent;
   position: absolute;
@@ -148,25 +164,38 @@ nav {
   z-index: 10;
 }
 
+.comment-item__actions-options,
 .post-item__actions-options {
   border-top: 1px solid #404040;
   background-color: #353535;
   padding: 7px 0;
 }
 
+.comment-item__actions-options > div,
 .post-item__actions-options > div {
   padding: 5px;
   text-align: center;
   cursor: pointer;
 }
 
+.comment-item__actions-options > div:hover,
 .post-item__actions-options > div:hover {
   background-color: #303030;
 }
 
-.comment-list__meta {
-  margin-bottom: .6rem;
+/* ===========================
+    (Post, Comment)List
+============================== */
+.list-data__top {
   font-size: .9rem;
+  margin-bottom: 1rem;
+}
+
+.list-data__meta,
+.sort-btn {
+  display: inline-block;
+  margin: 0;
+  margin-right: 1rem;
 }
 
 /* ===========================
@@ -185,11 +214,6 @@ nav {
 
 .editor-trigger:hover {
   background-color: #373737;
-}
-
-.sort-btn {
-  font-size: .9rem;
-  margin-bottom: 1rem;
 }
 
 .overlay {

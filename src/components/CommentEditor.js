@@ -73,13 +73,8 @@ class CommentEditor extends Component {
           onRequestClose={() => toggleEditor({ option: false })}
           contentLabel='Comment Modal'
         >
-          {action === 'create' && (
-            <CommentCreate {...createProps} />
-          )}
-
-          {action === 'edit' && (
-            <CommentEdit />
-          )}
+          {action === 'create' && <CommentCreate {...createProps} />}
+          {action === 'edit' && <CommentEdit />}
         </Modal>
       </div>
     )

@@ -99,6 +99,7 @@ function PostEdit ({ onSubmit, post, categories }) {
 
 class PostEditor extends Component {
   static propTypes = {
+    action: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
     post: PropTypes.object,
     postEditorOpen: PropTypes.bool.isRequired,
@@ -107,24 +108,25 @@ class PostEditor extends Component {
     toggleEditor: PropTypes.func.isRequired,
   }
 
+  onCreatePost = e => {
+    const { add, toggleEditor } = this.props
+    add(e)
+    toggleEditor({ option: false })
+  }
+
+  onEditPost = e => {
+    const { edit, toggleEditor } = this.props
+    edit(e)
+    toggleEditor({ option: false })
+  }
+
   render () {
     const {
-      add, edit, categories, post,
-      task, postEditorOpen, toggleEditor
+      categories, post, action, postEditorOpen, toggleEditor
     } = this.props
 
-    const onCreatePost = e => {
-      add(e)
-      toggleEditor({ option: false })
-    }
-
-    const onEditPost = e => {
-      edit(e)
-      toggleEditor({ option: false })
-    }
-
-    const createProps = { onSubmit: onCreatePost, categories }
-    const editProps = { onSubmit: onEditPost, categories, post }
+    const createProps = { onSubmit: this.onCreatePost, categories }
+    const editProps = { onSubmit: this.onEditPost, categories, post }
 
     return (
       <Modal
@@ -134,13 +136,8 @@ class PostEditor extends Component {
         onRequestClose={() => toggleEditor({ option: false })}
         contentLabel='Post Modal'
       >
-        {task === 'create' && (
-          <PostCreate {...createProps} />
-        )}
-
-        {task === 'edit' && (
-          <PostEdit {...editProps} />
-        )}
+        {action === 'create' && <PostCreate {...createProps} />}
+        {action === 'edit' && <PostEdit {...editProps} />}
       </Modal>
     )
   }
@@ -149,9 +146,9 @@ class PostEditor extends Component {
 function mapStateToProps (state, ownProps) {
   const { categories } = state
   const { postEditorOpen } = state.misc
-  const { post } = ownProps
+  const { action, post } = ownProps
 
-  return { categories, postEditorOpen, post }
+  return { action, categories, postEditorOpen, post }
 }
 
 function mapDispatchToProps (dispatch) {

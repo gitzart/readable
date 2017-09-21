@@ -9,16 +9,22 @@ import { sortComments, toggleCommentEditor } from '../actions'
 import Sort from './Sort'
 import CommentItem from './CommentItem'
 
-function CommentList ({ comments, commentObj, sort, toggleEditor }) {
+function CommentList (props) {
+  const {
+    comments, commentObj, sort, toggleEditor, parentPost
+  } = props
+
   return (
     <div>
-      <p className='comment-list__meta'>
+      <p className='list-data__meta'>
         {comments.length} comments
       </p>
 
       <div
         className='editor-trigger'
-        onClick={() => toggleEditor({ option: true, action: 'create' })}
+        onClick={() => toggleEditor(
+          { option: true, action: 'create', parentPost }
+        )}
       >
         <CommentIcon size='20' /> What do you think?
       </div>
@@ -39,14 +45,16 @@ function CommentList ({ comments, commentObj, sort, toggleEditor }) {
 CommentList.propTypes = {
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
   commentObj: PropTypes.object.isRequired,
+  parentPost: PropTypes.object,
   sort: PropTypes.func.isRequired,
   toggleEditor: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state, ownProps) {
-  const { comments } = ownProps
+  const { comments, parentPost } = ownProps
   const { commentObj } = state.misc
-  return { comments, commentObj }
+
+  return { comments, commentObj, parentPost }
 }
 
 function mapDispatchToProps (dispatch) {

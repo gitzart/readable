@@ -88,36 +88,47 @@ const miscState = {
     currentOption: '-voteScore'
   },
   postEditorOpen: false,
-  commentEditorOpen: false,
   postInAction: undefined,
-  currentPostAction: undefined
+  currentPostAction: undefined,
+  commentEditorOpen: false,
+  commentInAction: undefined,
+  currentCommentAction: undefined
 }
 
 const misc = (state = miscState, action) => {
+  const { option, post, comment, parentPost } = action
+  const currentAction = action.action
+
   switch (action.type) {
     case SORT_POSTS:
       return {
         ...state,
         postObj: {
-          ...state.postObj, currentOption: action.option
+          ...state.postObj, currentOption: option
         }
       }
     case SORT_COMMENTS:
       return {
         ...state,
         commentObj: {
-          ...state.commentObj, currentOption: action.option
+          ...state.commentObj, currentOption: option
         }
       }
     case TOGGLE_POST_EDITOR:
       return {
         ...state,
-        postEditorOpen: action.option,
-        postInAction: action.post,
-        currentPostAction: action.action
+        postEditorOpen: option,
+        postInAction: post,
+        currentPostAction: currentAction
       }
     case TOGGLE_COMMENT_EDITOR:
-      return { ...state, commentEditorOpen: action.value }
+      return {
+        ...state,
+        commentEditorOpen: option,
+        commentInAction: comment,
+        currentCommentAction: currentAction,
+        postInAction: parentPost
+      }
     default:
       return state
   }

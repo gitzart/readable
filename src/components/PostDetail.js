@@ -25,7 +25,7 @@ class PostDetail extends Component {
     return post
       ? <div>
           <PostItem post={post} type='detail' />
-          <CommentList comments={comments} />
+          <CommentList comments={comments} parentPost={post} />
         </div>
       : <div></div>
   }

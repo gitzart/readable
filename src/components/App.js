@@ -10,12 +10,17 @@ import { getAllCategories, getAllPosts } from '../actions'
 import PostDetail from './PostDetail'
 import PostList from './PostList'
 import PostEditor from './PostEditor'
+import CommentEditor from './CommentEditor'
 import Nav from './Nav'
 
 class App extends Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
-    posts: PropTypes.arrayOf(PropTypes.object).isRequired
+    posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+    postInAction: PropTypes.object,
+    currentPostAction: PropTypes.string,
+    commentInAction: PropTypes.object,
+    currentCommentAction: PropTypes.string
   }
 
   componentDidMount () {
@@ -36,7 +41,8 @@ class App extends Component {
 
   render() {
     const {
-      categories, posts, postInAction, currentPostAction
+      categories, posts, postInAction, currentPostAction,
+      commentInAction, currentCommentAction
     } = this.props
 
     return (
@@ -72,7 +78,16 @@ class App extends Component {
           )
         }} />
 
-        <PostEditor task={currentPostAction} post={postInAction} />
+        <PostEditor
+          action={currentPostAction}
+          post={postInAction}
+        />
+
+        <CommentEditor
+          action={currentCommentAction}
+          comment={commentInAction}
+          parentPost={postInAction}
+        />
       </main>
     )
   }
@@ -80,7 +95,10 @@ class App extends Component {
 
 function mapStateToProps (state, ownProps) {
   let { categories, posts } = state
-  const { postObj, postInAction, currentPostAction } = state.misc
+  const {
+    postObj, postInAction, currentPostAction,
+    commentInAction, currentCommentAction
+  } = state.misc
 
   posts = Object
     .keys(posts)
@@ -88,7 +106,10 @@ function mapStateToProps (state, ownProps) {
     .filter(post => !post.deleted)
     .sort(sortBy(postObj.currentOption))
 
-  return { categories, posts, postInAction, currentPostAction }
+  return {
+    categories, posts, postInAction, currentPostAction,
+    commentInAction, currentCommentAction
+  }
 }
 
 export default withRouter(connect(mapStateToProps)(App))

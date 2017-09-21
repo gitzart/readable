@@ -9,39 +9,77 @@ import Modal from 'react-modal'
 // local module imports
 import { addComment, toggleCommentEditor } from '../actions'
 
+function CommentCreate ({ onSubmit }) {
+  return (
+    <form className='editor-form' onSubmit={onSubmit}>
+      <input
+        className='editor-form-item'
+        type='text'
+        name='author'
+        placeholder='your precious name'
+        autoFocus
+        required
+      />
+
+      <textarea
+        className='editor-form-item'
+        name='body'
+        placeholder='well, tell us what you think'
+        required
+      >
+      </textarea>
+
+      <button className='editor-form-btn'>post</button>
+    </form>
+  )
+}
+
+function CommentEdit ({ onSubmit }) {
+  return (
+    <form onSubmit={onSubmit}>
+
+    </form>
+  )
+}
+
 class CommentEditor extends Component {
   static propTypes = {
-    parentId: PropTypes.string.isRequired,
-    addComment: PropTypes.func,
+    action: PropTypes.string,
+    parentPost: PropTypes.object,
+    add: PropTypes.func,
     commentEditorOpen: PropTypes.bool.isRequired,
-    toggleCommentEditor: PropTypes.func.isRequired
+    toggleEditor: PropTypes.func.isRequired
+  }
+
+  onCreateComment = e => {
+    const { add, parentPost, toggleEditor } = this.props
+    add(e, parentPost)
+    toggleEditor({ option: false })
   }
 
   render () {
     const {
-      parentId, addComment, commentEditorOpen, toggleCommentEditor
+      action, commentEditorOpen, toggleEditor
     } = this.props
+
+    const createProps = { onSubmit: this.onCreateComment }
 
     return (
       <div>
-        <button onClick={() => toggleCommentEditor(true)}>Add a new comment</button>
         <Modal
+          className='modal'
+          overlayClassName='overlay'
           isOpen={commentEditorOpen}
-          onRequestClose={() => toggleCommentEditor(false)}
+          onRequestClose={() => toggleEditor({ option: false })}
           contentLabel='Comment Modal'
         >
-          <form onSubmit={e => {
-            addComment(e, parentId)
-            toggleCommentEditor(false)
-          }}>
-            <input type='text' name='author' placeholder='author' autoFocus required />
-            <br />
-            <input type='text' name='title' placeholder='comment title' required />
-            <br />
-            <textarea name='body' placeholder='comment here...' required ></textarea>
-            <br />
-            <button>post</button>
-          </form>
+          {action === 'create' && (
+            <CommentCreate {...createProps} />
+          )}
+
+          {action === 'edit' && (
+            <CommentEdit />
+          )}
         </Modal>
       </div>
     )
@@ -49,24 +87,24 @@ class CommentEditor extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  const { parentId } = ownProps
+  const { action, parentPost } = ownProps
   const { commentEditorOpen } = state.misc
 
-  return { parentId, commentEditorOpen }
+  return { action, parentPost, commentEditorOpen }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    addComment: (e, postId) => {
+    add: (e, parentPost) => {
       e.preventDefault()
 
       const comment = serialize(e.target, { hash: true })
       comment.id = uuid4()
       comment.timestamp = Date.now()
 
-      dispatch(addComment(postId, comment))
+      dispatch(addComment(parentPost.id, comment))
     },
-    toggleCommentEditor: value => dispatch(toggleCommentEditor(value))
+    toggleEditor: obj => dispatch(toggleCommentEditor(obj))
   }
 }
 

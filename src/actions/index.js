@@ -48,9 +48,15 @@ export const togglePostEditor = (
   post
 })
 
-export const toggleCommentEditor = value => ({
+export const toggleCommentEditor = ({
+  option, action = undefined,
+  comment = undefined, parentPost = undefined
+}) => ({
   type: types.TOGGLE_COMMENT_EDITOR,
-  value
+  option,
+  action,
+  comment,
+  parentPost
 })
 
 export const deletePost = postId => ({

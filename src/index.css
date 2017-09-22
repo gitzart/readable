@@ -145,6 +145,7 @@ nav {
 .post-item__meta {
   background-color: #353535;
   line-height: 30px;
+  margin-right: 10px;
 }
 
 .comment-item__meta-item,

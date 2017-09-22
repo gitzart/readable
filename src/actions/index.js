@@ -99,8 +99,8 @@ export const getAllCategories = () => dispatch =>
 export const getAllPosts = () => dispatch =>
   API.getAllPosts().then(data => dispatch(loadPosts(data)))
 
-export const getAllComments = post => dispatch =>
-  API.getAllComments(post)
+export const getAllComments = postId => dispatch =>
+  API.getAllComments(postId)
     .then(data => dispatch(loadComments(data)))
 
 export const addPost = post => dispatch =>

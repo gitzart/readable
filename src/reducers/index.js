@@ -51,14 +51,17 @@ const posts = (state = {}, action) => {
 }
 
 const comments = (state = {}, action) => {
-  const { comment } = action
+  const { comments, comment } = action
 
   switch (action.type) {
     case LOAD_COMMENTS:
-      return action.comments.reduce((comments, comment) => {
-        comments[comment.id] = comment
-        return comments
-      }, {})
+      return {
+        ...state,
+        ...comments.reduce((obj, comment) => {
+          obj[comment.id] = comment
+          return obj
+        }, {})
+      }
     case ADD_COMMENT:
       return { ...state, [comment.id]: comment }
     case REMOVE_COMMENT:

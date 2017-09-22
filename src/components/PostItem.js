@@ -7,13 +7,17 @@ import Time from 'react-time'
 import CaretUp from 'react-icons/lib/fa/caret-up'
 import CaretDown from 'react-icons/lib/fa/caret-down'
 import MoreHoriz from 'react-icons/lib/md/more-horiz'
+import CommentsIcon from 'react-icons/lib/fa/comments'
 
 // local module imports
-import { togglePostEditor, removePost, votePost } from '../actions'
+import {
+  getAllComments, togglePostEditor, removePost, votePost
+} from '../actions'
 
 class PostItem extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired,
+    totalComments: PropTypes.number,
     type: PropTypes.string,
     remove: PropTypes.func.isRequired,
     vote: PropTypes.func.isRequired,
@@ -29,9 +33,16 @@ class PostItem extends Component {
     })
   }
 
+  componentDidMount = postId => {
+    const { getAllComments, post } = this.props
+    getAllComments(post.id)
+  }
+
   render () {
     const dtFormat = `MMM DD'YY [at] HH:mm`
-    const { post, type, remove, vote, toggleEditor } = this.props
+    const {
+      post, type, remove, vote, toggleEditor, totalComments
+    } = this.props
     const { actionOptions } = this.state
 
     return (
@@ -63,6 +74,17 @@ class PostItem extends Component {
               <CaretDown size='30' />
             </button>
           </div>
+
+          {type !== 'detail' && (
+            <div className='post-item__meta'>
+              <span className='post-item__meta-item'>
+                <span style={{marginRight: '.3rem'}}>
+                  {totalComments}
+                </span>
+                <CommentsIcon size='15' />
+              </span>
+            </div>
+          )}
 
           <div className='post-item__meta'>
             <span className='post-item__meta-item'>
@@ -101,13 +123,20 @@ class PostItem extends Component {
   }
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps ({ comments }, ownProps) {
   const { post, type } = ownProps
-  return { post, type }
+  const totalComments = Object
+    .keys(comments)
+    .map(key => comments[key])
+    .filter(c => c.parentId === post.id && !c.deleted)
+    .length
+
+  return { post, type, totalComments }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    getAllComments: postId => dispatch(getAllComments(postId)),
     remove: postId => dispatch(removePost(postId)),
     vote: (postId, option) => dispatch(votePost(postId, option)),
     toggleEditor: (obj) => dispatch(togglePostEditor(obj))
